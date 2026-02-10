@@ -18,20 +18,20 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
+const menuItems = require("./data/menu");
 // TEMP: mock orders storage
 const orders = [
 
 ];
 
 app.get("/api/orders", (req, res) => {
-    // res.send(orders)
-    res.status(200).json({
-        message: "available orders",
-        order: orders
+        res.status(200).json({
+            message: "available orders",
+            order: orders
 
+        })
     })
-})
+    // creating order api
 app.post("/api/orders", (req, res) => {
     const order = req.body;
 
@@ -54,6 +54,12 @@ app.post("/api/orders", (req, res) => {
         orderId: savedOrder.id,
     });
 });
+//creating menu api
+app.get("/api/menu", (req, res) => {
+    res.status(200).json(menuItems);
+
+
+})
 
 app.listen(5000, () => {
     console.log("Server running on http://localhost:5000");
