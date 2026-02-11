@@ -1,37 +1,17 @@
-// const express = require('express');
-// const app = express();
-// app.use(express.json());
-// const orderRoutes = require('./routes/order');
-// app.use("/order", orderRoutes);
-// app.get("/", (req, res) => {
-//     res.send("Welcome to Food Order App Backend");
-// })
-// const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => {
-//     console.log(`Server is running on http://localhost:${PORT}`);
-// })
-
-const express = require("express");
+const express = require('express');
 const cors = require('cors');
-
 const app = express();
+app.use(express.json());
+const orderRoutes = require('./routes/order');
+app.use("/order", orderRoutes);
 
 app.use(cors());
-app.use(express.json());
 const menuItems = require("./data/menu");
-// TEMP: mock orders storage
+// TEMP: mock orders storage 
 const orders = [
 
 ];
-
-app.get("/api/orders", (req, res) => {
-        res.status(200).json({
-            message: "available orders",
-            order: orders
-
-        })
-    })
-    // creating order api
+// creating order api
 app.post("/api/orders", (req, res) => {
     const order = req.body;
 
@@ -54,11 +34,15 @@ app.post("/api/orders", (req, res) => {
         orderId: savedOrder.id,
     });
 });
-//creating menu api
+
+//getting the orders
+app.get("/api/orders", (req, res) => {
+        res.status(200).json({ orders })
+
+    })
+    //creating menu api
 app.get("/api/menu", (req, res) => {
     res.status(200).json(menuItems);
-
-
 })
 
 app.listen(5000, () => {
