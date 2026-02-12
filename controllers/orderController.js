@@ -1,3 +1,5 @@
+const menuItems = require("../data/menu");
+
 //database replaced later
 let orders = [];
 
@@ -15,7 +17,6 @@ const createOrder = (req, res) => {
     };
 
     orders.push(savedOrder);
-    console.log(orders)
 
     res.status(201).json({
         message: "Order created",
@@ -23,9 +24,13 @@ const createOrder = (req, res) => {
     });
 };
 
+
 const getOrders = (req, res) => {
     res.status(200).json({ orders });
 };
+
+
+
 
 module.exports = {
     createOrder,

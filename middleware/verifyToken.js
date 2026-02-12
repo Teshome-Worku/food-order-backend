@@ -14,9 +14,7 @@ const verifyToken = (req, res, next) => {
     if (!token) {
         return res.status(401).json({ message: "Invalid token format" });
     }
-    if (error.name === "TokenExpiredError") {
-        return res.status(401).json({ message: "Token expired, please login again" });
-    }
+
 
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
