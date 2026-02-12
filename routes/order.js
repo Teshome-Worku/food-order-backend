@@ -1,8 +1,12 @@
-const express = require("express")
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
+const verifyToken = require("../middleware/verifyToken");
+const { createOrder, getOrders } = require("../controllers/orderController");
 
-const { createOrder, getOrders } = require("../controllers/orderController")
-router.post("/", createOrder)
-router.get("/", getOrders)
+// Public route (customers)
+router.post("/", createOrder);
 
-module.exports = router
+// Protected route (admin only)
+router.get("/", verifyToken, getOrders);
+
+module.exports = router;

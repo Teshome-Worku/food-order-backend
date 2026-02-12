@@ -1,33 +1,33 @@
-const orders = [];
+//database replaced later
+let orders = [];
 
-exports.createOrder = (req, res) => {
+const createOrder = (req, res) => {
     const order = req.body;
-    if (!order.name || !order.items) {
-        return res.status(400).json({
-            message: "Name and items are required"
-        })
-    } else if (order.items.length === 0) {
-        return res.status(400).json({
-            message: "At least one item is required"
-        })
+
+    if (!order || !order.items || order.items.length === 0) {
+        return res.status(400).json({ message: "Invalid order" });
     }
-    order.id = orders.length + 1; // Simple ID generation
-    order.createdAt = new Date();
-    orders.push(order);
-    // Here you would typically save the order to a database
+
+    const savedOrder = {
+        id: Date.now(),
+        ...order,
+        status: "pending",
+    };
+
+    orders.push(savedOrder);
+    console.log(orders)
+
     res.status(201).json({
-        message: "Order created successfully",
-        order: orders
-    })
+        message: "Order created",
+        orderId: savedOrder.id,
+    });
+};
 
-    console.log(`
-        Order receive:
-        Name: ${order.name}
-        Items: ${order.items.map(item => item.name).join(", ") }
-    `);
+const getOrders = (req, res) => {
+    res.status(200).json({ orders });
+};
 
-}
-
-exports.getOrders = (req, res) => {
-    res.status(200).json(orders)
-}
+module.exports = {
+    createOrder,
+    getOrders,
+};
