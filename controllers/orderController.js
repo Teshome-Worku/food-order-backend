@@ -1,6 +1,4 @@
-const menuItems = require("../data/menu");
-
-//database replaced later
+// TODO: replace with database
 let orders = [];
 
 const createOrder = (req, res) => {
