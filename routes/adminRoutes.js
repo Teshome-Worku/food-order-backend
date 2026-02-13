@@ -5,7 +5,7 @@ const JWT_SECRET = require("../config/jwt");
 const router = express.Router();
 
 // Hardcoded admin credentials (for now)
-const ADMIN_EMAIL = "admin@mamifood.com";
+const ADMIN_EMAIL = "mamifood@gmail.com";
 const ADMIN_PASSWORD = "123456";
 
 router.post("/login", (req, res) => {
@@ -15,7 +15,7 @@ router.post("/login", (req, res) => {
         return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ role: "admin" },
+    const token = jwt.sign({ role: "admin", email: ADMIN_EMAIL },
         JWT_SECRET, { expiresIn: "1h" }
     );
 
