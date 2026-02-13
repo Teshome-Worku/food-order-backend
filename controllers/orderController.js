@@ -9,8 +9,8 @@ const createOrder = (req, res) => {
     }
 
     const savedOrder = {
-        id: Date.now(),
         ...order,
+        id: Date.now(),
         status: "pending",
     };
 
@@ -30,7 +30,8 @@ const getOrders = (req, res) => {
 const VALID_STATUSES = ["pending", "preparing", "ready", "delivered"];
 
 const updateOrderStatus = (req, res) => {
-    const orderId = parseInt(req.params.id, 10);
+    const idParam = req.params.id;
+    const orderId = /^\d+$/.test(idParam) ? parseInt(idParam, 10) : NaN;
     const { status } = req.body;
 
     if (!status || !VALID_STATUSES.includes(status)) {
@@ -39,9 +40,13 @@ const updateOrderStatus = (req, res) => {
         });
     }
 
-    const index = orders.findIndex((o) => o.id === orderId);
+    const index = orders.findIndex(
+        (o) => o.id === orderId || String(o.id) === idParam
+    );
     if (index === -1) {
-        return res.status(404).json({ message: "Order not found" });
+        return res.status(404).json({
+            message: "Order not found. It may have been cleared after a server restart.",
+        });
     }
 
     orders[index] = { ...orders[index], status };
